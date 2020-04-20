@@ -3,8 +3,8 @@ package kafkamessaging.model;
 import lombok.*;
 
 @Data
+@NoArgsConstructor
 public class SimpleModel {
-
-    private final String fieldOne;
-    private final String fieldTwo;
+    private String message;
+    private  String description;
 }

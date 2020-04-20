@@ -1,34 +1,28 @@
 package kafkamessaging.api;
 
 import kafkamessaging.model.SimpleModel;
-import kafkamessaging.senders.KafkaSender;
+import kafkamessaging.senders.KafkaJsonSender;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static kafkamessaging.listeners.KafkaListeners.TOPIC_IN;
 
-
 @Slf4j
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 public class SimpleController {
 
-    private final KafkaSender kafkaSender;
+    private final KafkaJsonSender kafkaJsonSender;
 
-    @GetMapping("/")
-    public ResponseEntity<String> get() {
-        log.info("received get");
-        return ResponseEntity.ok("POST to /api/kafka");
-    }
-
-    @RequestMapping("/api/kafka")
-    public void post(@RequestBody SimpleModel simpleModel) throws JsonProcessingException {
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/api/kafka")
+    public void post(@RequestBody SimpleModel simpleModel) {
         log.info("controller receive: {}", simpleModel);
-        kafkaSender.send(TOPIC_IN, simpleModel);
+        kafkaJsonSender.send(TOPIC_IN, simpleModel);
     }
+
 }

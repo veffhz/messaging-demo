@@ -1,8 +1,5 @@
 package kafkamessaging.senders;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,13 +9,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class KafkaSender {
+public class KafkaStringSender {
 
-    private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public <T> void send(String topic, T data) throws JsonProcessingException {
+    public void send(String topic, String data) {
         log.info("sending data: {}", data);
-        kafkaTemplate.send(topic, objectMapper.writeValueAsString(data));
+        kafkaTemplate.send(topic, data);
     }
 }
